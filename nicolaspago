@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicolás Tienda Fem</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: #ff69b4;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .container {
+      max-width: 500px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #total {
+      margin-top: 1rem;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Nicolás Tienda Fem
+  </header>
+
+  <div class="container">
+    <h2>Joggin con piel</h2>
+    <img src="https://tienda.mslmisslee.com/wp-content/uploads/2025/06/Polish_20250621_172230183-683x1024.png" alt="Joggin" />
+    <p>Colores: Azul marino, Camel, Gris claro, Negro.<br />Talles: 2, 3, 4, 5.<br />Precio: $25.000 c/u</p>
+
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" required />
+
+    <label for="color">Color</label>
+    <select id="color">
+      <option value="Azul marino">Azul marino</option>
+      <option value="Camel">Camel</option>
+      <option value="Gris claro">Gris claro</option>
+      <option value="Negro">Negro</option>
+    </select>
+
+    <label for="talle">Talle</label>
+    <select id="talle">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+
+    <label for="cantidad">Cantidad</label>
+    <input type="number" id="cantidad" min="1" value="1" onchange="actualizarTotal()" />
+
+    <div id="total">Total: $25000</div>
+
+    <button onclick="pagar()">Pagar ahora</button>
+  </div>
+
+  <footer>
+    &copy; 2025 Nicolás Tienda Fem. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    const precioUnitario = 25000;
+
+    function actualizarTotal() {
+      const cantidad = parseInt(document.getElementById("cantidad").value) || 1;
+      const total = cantidad * precioUnitario;
+      document.getElementById("total").innerText = `Total: $${total.toLocaleString()}`;
+    }
+
+    async function pagar() {
+      const nombre = document.getElementById("nombre").value;
+      const color = document.getElementById("color").value;
+      const talle = document.getElementById("talle").value;
+      const cantidad = parseInt(document.getElementById("cantidad").value) || 1;
+
+      if (!nombre) {
+        alert("Por favor ingresá tu nombre.");
+        return;
+      }
+
+      const datos = {
+        nombre,
+        color,
+        talle,
+        cantidad
+      };
+
+      try {
+        const respuesta = await fetch("https://script.google.com/macros/s/AKfycbxgfD5Ppe3GyYhLJgGnVjDwbC8Y07Uh20R8EsSv1fjEag4aLB9AkoV8UuwKEBp-IVy1/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(datos)
+        });
+
+        const resultado = await respuesta.json();
+        if (resultado.init_point) {
+          window.location.href = resultado.init_point;
+        } else {
+          alert("Error al generar el pago. Intentá más tarde.");
+        }
+      } catch (error) {
+        alert("Error de conexión con el sistema. Intentá luego.");
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -3,46 +3,38 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Nicolás Tienda Fem — Demo</title>
+<title>Nicolás Tienda Fem</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --primary:#A94FB0;
-    --accent:#C061C9;
-    --bg:#fbf7fe;
-    --card:#ffffff;
-    --muted:#666;
-  }
-  body{font-family:Inter,system-ui,Arial; background:var(--bg); margin:0; padding:20px; color:#222;}
-  .wrap{max-width:1100px;margin:0 auto;}
-  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-  header h1{color:var(--primary);margin:0;font-size:20px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-  .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  .card img{width:100%;height:180px;object-fit:cover;border-radius:8px}
-  .price{font-weight:700;color:#0b0}
-  .btn{background:var(--primary);color:#fff;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600}
-  .btn.secondary{background:#fff;color:var(--primary);border:1px solid var(--primary)}
-  .cartbox{position:fixed;right:18px;bottom:18px;background:var(--card);padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);width:320px;max-width:92%}
-  .cart-items{max-height:220px;overflow:auto;margin-bottom:10px}
-  .flex{display:flex;gap:8px;align-items:center}
-  .stars{color:#FFD700}
-  .product-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px}
-  .modal-inner{width:100%;max-width:920px;background:#fff;border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .reviews {margin-top:12px}
-  textarea,input{font-family:Inter; padding:8px;border-radius:8px;border:1px solid #ddd;width:100%}
-  .small{font-size:13px;color:var(--muted)}
-  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
-  @media(max-width:800px){ .modal-inner{grid-template-columns:1fr} .card img{height:150px} }
+:root{--primary:#A94FB0;--accent:#C061C9;--bg:#fbf7fe;--card:#fff;--muted:#666}
+body{font-family:Inter,system-ui,Arial;background:var(--bg);margin:0;padding:18px;color:#222}
+.wrap{max-width:1100px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{color:var(--primary);margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:var(--card);border-radius:10px;padding:12px;box-shadow:0 6px 16px rgba(0,0,0,0.06)}
+.card img{width:100%;height:170px;object-fit:cover;border-radius:8px}
+.price{font-weight:700;color:#0a8a0a}
+.btn{background:var(--primary);color:#fff;border:none;padding:9px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn.secondary{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+.cartbox{position:fixed;right:18px;bottom:18px;background:var(--card);padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);width:340px;max-width:92%}
+.cart-items{max-height:260px;overflow:auto;margin-bottom:10px}
+.flex{display:flex;gap:8px;align-items:center}
+.stars{color:#FFD700}
+.product-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-inner{width:100%;max-width:920px;background:#fff;border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.reviews {margin-top:12px}
+textarea,input{font-family:Inter;padding:8px;border-radius:8px;border:1px solid #ddd;width:100%}
+.small{font-size:13px;color:var(--muted)}
+footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:800px){ .modal-inner{grid-template-columns:1fr} .card img{height:150px} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>Nicolás Tienda Fem</h1>
-    <div>
-      <button id="openCatalog" class="btn">Catálogo</button>
-    </div>
+    <div><button id="openCatalog" class="btn">Ir al catálogo</button></div>
   </header>
 
   <!-- Catálogo -->
@@ -56,13 +48,8 @@
     </div>
     <div id="cartItems" class="cart-items"></div>
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div class="small">Total</div>
-        <div id="cartTotal" style="font-weight:800;font-size:18px">$0</div>
-      </div>
-      <div>
-        <button id="checkoutBtn" class="btn">Pagar</button>
-      </div>
+      <div><div class="small">Total</div><div id="cartTotal" style="font-weight:800;font-size:18px">$0</div></div>
+      <div><button id="checkoutBtn" class="btn">Pagar</button></div>
     </div>
   </div>
 
@@ -70,7 +57,7 @@
   <div id="productModal" class="product-modal" role="dialog" aria-hidden="true">
     <div class="modal-inner">
       <div>
-        <img id="modalImg" src="" alt="producto">
+        <img id="modalImg" src="" alt="producto" style="width:100%;height:320px;object-fit:cover;border-radius:8px">
         <div style="display:flex;gap:10px;margin-top:10px">
           <img id="s1" src="" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer">
           <img id="s2" src="" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer">
@@ -85,12 +72,7 @@
 
         <div style="margin-top:10px">
           <label class="small">Talle</label>
-          <select id="modalSize" style="margin-top:6px;padding:8px;border-radius:8px;border:1px solid #ddd">
-            <option value="Único">Único</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
+          <select id="modalSize" style="margin-top:6px;padding:8px;border-radius:8px;border:1px solid #ddd"></select>
         </div>
 
         <div style="margin-top:12px;display:flex;gap:8px">
@@ -108,46 +90,62 @@
 
 <script>
 /* ======================
-   CONFIG: cambia estos valores
+   CONFIG: reemplazá estos valores
    ====================== */
-const INVENTORY_SOURCE = null; // null = usa demo interno. Reemplazar con URL JSON o Google Sheets JSON.
-const GOOGLE_REVIEW_POST_URL = "https://script.google.com/macros/s/AKfycbziX7jD-f7vvkMObh8_u2k5SwJG-zWCVO3lLP6oiptHQ3IINd5lwIREU415mGV44GRt/exec"; // tu script de reviews (ya lo pasaste)
-const MARKETPLACE_ACCESS_TOKEN = "APP_USR-3592417782393490-062312-42713d75e4ccf512cd2beffbb51405c9-267507332"; // token de prueba que pasaste
-const PREFERENCE_CREATE_ENDPOINT = null; // RECOMENDADO: poner aquí la URL de tu servidor que crea la preferencia (Apps Script o Node). Si lo dejas null ver sección más abajo.
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXcATU7GpLEyEA2Z0fjK1YOSMjtxG-Mhc5KTbbyZLFTaUGAlxvcQql7SS2oU_bizN7i6q71nO8vPQB/pub?gid=0&single=true&output=csv";
+const GOOGLE_REVIEW_POST_URL = "https://script.google.com/macros/s/AKfycbziX7jD-f7vvkMObh8_u2k5SwJG-zWCVO3lLP6oiptHQ3IINd5lwIREU415mGV44GRt/exec";
+const REVIEWS_GET_URL = "REPLACE_WITH_YOUR_REVIEWS_GET_ENDPOINT_IF_USED"; // opcional, te dejo latermente apps script
+const MARKETPLACE_ACCESS_TOKEN = "APP_USR-3592417782393490-062312-42713d75e4ccf512cd2beffbb51405c9-267507332"; // token de prueba que diste
+const PREFERENCE_CREATE_ENDPOINT = null; // RECOMENDADO: URL Apps Script para crear preferencia (ver instrucciones abajo)
 /* ====================== */
 
-/* Demo de inventario (si no pones INVENTORY_SOURCE) */
-const DEMO_PRODUCTS = [
-  { sku:"BLS001", name:"Blusa Talle Especial", price:15000, stock:3, images:["https://i.imgur.com/8Km9tLL.jpg","https://i.imgur.com/OQmZm1Q.jpg","https://i.imgur.com/dM7Thhn.jpg"], desc:"Blusa femenina, talle especial, color coral."},
-  { sku:"CLZ010", name:"Calza Térmica", price:15000, stock:10, images:["https://i.imgur.com/IZb8X1s.jpg","https://i.imgur.com/OK0G8gS.jpg","https://i.imgur.com/3v3x1Q2.jpg"], desc:"Calza térmica elastizada de alta calidad."},
-  { sku:"JNS029", name:"Jeans Capri", price:12000, stock:5, images:["https://i.imgur.com/3bK4X7k.jpg","https://i.imgur.com/Pu3n1bF.jpg","https://i.imgur.com/7kQ7W8R.jpg"], desc:"Capri denim, fresco para verano."}
-];
-
-/* Estado del carrito */
-let PRODUCTS = []; // cargado desde demo o INVENTORY_SOURCE
+let PRODUCTS = [];
 let CART = [];
 
-/* Inicialización */
-document.addEventListener('DOMContentLoaded', async () => {
-  if(INVENTORY_SOURCE){
-    try{
-      // si la URL es de Google Sheets publicada como JSON, adaptá parseo aquí
-      const res = await fetch(INVENTORY_SOURCE);
-      PRODUCTS = await res.json();
-    }catch(e){
-      console.error("Error cargando inventario:",e);
-      PRODUCTS = DEMO_PRODUCTS;
-    }
-  } else {
-    PRODUCTS = DEMO_PRODUCTS;
+/* UTIL */
+function numberFormat(n){ return n.toLocaleString('es-AR'); }
+
+/* Cargar inventario desde CSV (tu Google Sheets publicado) */
+async function loadCSV(url){
+  try{
+    const res = await fetch(url);
+    const txt = await res.text();
+    const rows = txt.trim().split('\n').map(r=>r.split(','));
+    // asumimos encabezado en primera fila: A codigo, B producto, C talle, D precio, E stock, F imagen
+    const header = rows.shift().map(h=>h.trim());
+    // convertir a objetos agrupando por SKU; queremos productos únicos por SKU con variantes de talle
+    const map = {};
+    rows.forEach(r=>{
+      // manejo sencillo: si hay comas dentro de celdas, pueden romper; ideal usar publish as csv sin comas
+      const codigo = (r[0]||"").trim();
+      const producto = (r[1]||"").trim();
+      const talle = (r[2]||"").trim();
+      const precio = parseFloat((r[3]||"0").replace(/\D/g,'')) || 0;
+      const stock = parseInt((r[4]||"0").replace(/\D/g,'')) || 0;
+      const imagen = (r[5]||"").trim();
+      if(!codigo) return;
+      if(!map[codigo]) map[codigo] = { sku:codigo, name:producto, price:precio, stock:0, images: imagen ? [imagen] : [], desc:"", sizes: new Set() };
+      map[codigo].sizes.add(talle || "Único");
+      map[codigo].stock += stock;
+    });
+    PRODUCTS = Object.values(map).map(p=>{
+      return { sku:p.sku, name:p.name, price:p.price, stock:p.stock, images:p.images.length? p.images : ["https://i.imgur.com/8Km9tLL.jpg"], desc:"", sizes: Array.from(p.sizes) };
+    });
+  }catch(e){
+    console.error("Error al leer CSV:",e);
+    PRODUCTS = []; // fallback
   }
   renderCatalog();
-});
+}
 
 /* Render catálogo */
 function renderCatalog(){
   const c = document.getElementById('catalog');
   c.innerHTML = '';
+  if(PRODUCTS.length===0){
+    c.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 0"><strong>No hay productos. Revisa CSV URL.</strong></div>';
+    return;
+  }
   PRODUCTS.forEach(p=>{
     const el = document.createElement('div');
     el.className='card';
@@ -164,25 +162,28 @@ function renderCatalog(){
   });
 }
 
-/* Formato moneda */
-function numberFormat(n){ return n.toLocaleString('es-AR'); }
+/* Inicialización */
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadCSV(CSV_URL);
+});
 
 /* Abrir modal producto */
 function openProduct(sku){
   const p = PRODUCTS.find(x=>x.sku===sku);
   if(!p) return;
   document.getElementById('modalImg').src = p.images[0];
-  document.getElementById('s1').src = p.images[0];
+  document.getElementById('s1').src = p.images[0] || p.images[0];
   document.getElementById('s2').src = p.images[1] || p.images[0];
   document.getElementById('s3').src = p.images[2] || p.images[0];
-
   document.getElementById('modalTitle').textContent = p.name;
   document.getElementById('modalSku').textContent = "SKU: "+p.sku;
   document.getElementById('modalPrice').textContent = "$" + numberFormat(p.price);
-  document.getElementById('modalDesc').textContent = p.desc;
-  document.getElementById('addToCart').onclick = ()=> addToCart(p.sku, document.getElementById('modalSize').value);
+  document.getElementById('modalDesc').textContent = p.desc || "";
+  const sel = document.getElementById('modalSize');
+  sel.innerHTML = '';
+  p.sizes.forEach(s=> sel.insertAdjacentHTML('beforeend', `<option value="${s}">${s}</option>`));
+  document.getElementById('addToCart').onclick = ()=> addToCart(p.sku, sel.value);
   document.getElementById('openReviews').onclick = ()=> loadReviews(p.sku);
-
   document.getElementById('productModal').style.display = "flex";
 }
 
@@ -191,11 +192,7 @@ function openProduct(sku){
   const el = document.getElementById(id);
   if(el) el.onclick = ()=> { document.getElementById('modalImg').src = el.src; }
 });
-
-/* cerrar modal si clic fuera */
-document.getElementById('productModal').addEventListener('click', (ev)=>{
-  if(ev.target.id === 'productModal') document.getElementById('productModal').style.display='none';
-});
+document.getElementById('productModal').addEventListener('click', (ev)=>{ if(ev.target.id==='productModal') document.getElementById('productModal').style.display='none'; });
 
 /* carrito */
 function addToCart(sku, size){
@@ -207,7 +204,6 @@ function addToCart(sku, size){
   alert("Agregado al carrito ✅");
   document.getElementById('productModal').style.display='none';
 }
-
 function updateCartUI(){
   if(CART.length === 0){ document.getElementById('cart').style.display='none'; return; }
   document.getElementById('cart').style.display='block';
@@ -238,8 +234,6 @@ function updateCartUI(){
   });
   document.getElementById('cartTotal').textContent = "$" + numberFormat(total);
 }
-
-/* botones cart */
 function inc(i){ CART[i].qty++; updateCartUI(); }
 function dec(i){ if(CART[i].qty>1) CART[i].qty--; updateCartUI(); }
 function remove(i){ CART.splice(i,1); updateCartUI(); }
@@ -252,30 +246,28 @@ document.getElementById('closeCart').onclick = ()=> document.getElementById('car
 document.getElementById('checkoutBtn').onclick = async ()=>{
   if(CART.length===0){ alert("Tu carrito está vacío"); return; }
 
-  // Preparamos items
   const items = CART.map(i=>({
     title:i.name + (i.size ? " - Talle " + i.size : ""),
-    quantity:i.qty,
+    quantity: i.qty,
     unit_price: i.price
   }));
 
-  // Si definiste PREFERENCE_CREATE_ENDPOINT (recomendado), la llamamos:
+  // si definiste endpoint servidor (recomendado), lo llamamos
   if(PREFERENCE_CREATE_ENDPOINT){
     try{
       const resp = await fetch(PREFERENCE_CREATE_ENDPOINT, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({items, external_reference: "pedido_web_demo"})
+        body: JSON.stringify({items, external_reference: "pedido_web_nicolas"})
       });
       const data = await resp.json();
-      if(data && data.init_point){
-        window.open(data.init_point,'_blank');
-      } else alert("Error creando preferencia");
+      if(data && data.init_point){ window.open(data.init_point,'_blank'); return; }
+      alert("Error creando preferencia desde endpoint");
     }catch(e){ console.error(e); alert("Error creando preferencia (endpoint)"); }
     return;
   }
 
-  // Si NO tenés endpoint, intentamos crear preferencia directo (puede fallar por CORS)
+  // Intento crear preferencia directamente desde cliente (solo para pruebas, puede fallar por CORS)
   try{
     const prefResp = await fetch("https://api.mercadopago.com/checkout/preferences", {
       method:'POST',
@@ -283,14 +275,11 @@ document.getElementById('checkoutBtn').onclick = async ()=>{
         'Content-Type':'application/json',
         'Authorization':'Bearer '+MARKETPLACE_ACCESS_TOKEN
       },
-      body: JSON.stringify({items, external_reference:"pedido_web_demo"})
+      body: JSON.stringify({items, external_reference:"pedido_web_nicolas"})
     });
     const pref = await prefResp.json();
-    if(pref && pref.init_point){
-      window.open(pref.init_point,'_blank');
-    } else {
-      alert("No se pudo crear la preferencia: " + (pref && pref.message ? pref.message : 'error'));
-    }
+    if(pref && pref.init_point){ window.open(pref.init_point,'_blank'); }
+    else alert("No se pudo crear preferencia: " + (pref && pref.message ? pref.message : 'error'));
   }catch(err){
     console.error(err);
     alert("No se pudo conectar con Mercado Pago desde el cliente. Recomendado: usar endpoint de servidor (Apps Script / Node).");
@@ -301,12 +290,10 @@ document.getElementById('checkoutBtn').onclick = async ()=>{
    RESEÑAS: enviar a Google Script y mostrar
    ====================== */
 function loadReviews(sku){
-  // Carga local (si querés podés leer desde Sheets y filtrar por producto)
   document.getElementById('reviewsContainer').innerHTML = `
     <div style="padding:10px;background:#fff;border-radius:8px">
       <h4 style="margin:0 0 6px">Dejá tu opinión</h4>
-      <div style="margin-bottom:6px">
-        <label class="small">Estrellas</label><br>
+      <div style="margin-bottom:6px"><label class="small">Estrellas</label><br>
         <select id="rvStars">
           <option value="5">★★★★★ 5</option>
           <option value="4">★★★★ 4</option>
@@ -315,9 +302,8 @@ function loadReviews(sku){
           <option value="1">★ 1</option>
         </select>
       </div>
-      <div>
-        <textarea id="rvComment" placeholder="Tu comentario..." style="height:80px"></textarea>
-      </div>
+      <div><textarea id="rvComment" placeholder="Tu comentario..." style="height:80px"></textarea></div>
+      <div style="margin-top:8px"><label class="small">Foto (opcional)</label><input id="rvImage" type="file" accept="image/*"></div>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="btn" onclick="postReview('${sku}')">Enviar</button>
         <button class="btn secondary" onclick="showApprovedReviews('${sku}')">Ver reseñas</button>
@@ -327,32 +313,67 @@ function loadReviews(sku){
   `;
 }
 
-/* enviar review al Google Script (tu endpoint) */
+/* enviar review al Google Script (tu endpoint) - se envía base64 si hay imagen */
 async function postReview(sku){
   const stars = document.getElementById('rvStars').value;
   const comment = document.getElementById('rvComment').value.trim();
   if(!comment){ alert("Escribí un comentario"); return; }
-  const payload = { nombre:"Cliente web", estrellas: stars, comentario: comment, producto: sku };
 
-  try{
-    const res = await fetch(GOOGLE_REVIEW_POST_URL, {
-      method:'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    if(res.ok){ alert("Gracias por tu reseña!"); document.getElementById('productModal').style.display='none'; }
-    else alert("Error al enviar reseña");
-  }catch(e){ console.error(e); alert("Error al conectar reseñas"); }
+  const fileInput = document.getElementById('rvImage');
+  if(fileInput && fileInput.files && fileInput.files[0]){
+    const file = fileInput.files[0];
+    // limit 2MB
+    if(file.size > 2*1024*1024){ alert("La foto no puede superar 2MB"); return; }
+    const base64 = await fileToBase64(file);
+    // payload con imagen base64
+    const payload = { nombre:"Cliente web", estrellas: stars, comentario: comment, producto: sku, imageBase64: base64, imageName: file.name };
+    try{
+      const res = await fetch(GOOGLE_REVIEW_POST_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if(res.ok){ alert("Gracias por tu reseña! Se subió para revisión."); document.getElementById('productModal').style.display='none'; }
+      else alert("Error al enviar reseña");
+    }catch(e){ console.error(e); alert("Error al conectar reseñas"); }
+  } else {
+    // sin imagen
+    const payload = { nombre:"Cliente web", estrellas: stars, comentario: comment, producto: sku };
+    try{
+      const res = await fetch(GOOGLE_REVIEW_POST_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if(res.ok){ alert("Gracias por tu reseña! Se subió para revisión."); document.getElementById('productModal').style.display='none'; }
+      else alert("Error al enviar reseña");
+    }catch(e){ console.error(e); alert("Error al conectar reseñas"); }
+  }
 }
 
-/* mostrar reseñas aprobadas (demo: lee de localStorage o de Sheets si montás) */
-function showApprovedReviews(sku){
-  // IMPLEMENTACIÓN: Podés publicar en Google Sheets las reseñas aprobadas y exponerlas vía JSON (Apps Script),
-  // luego hacer fetch() aquí para traerlas y renderizarlas. Por ahora mostramos mensajes demo.
-  const cont = document.createElement('div');
-  cont.style.marginTop='12px';
-  cont.innerHTML = `<div class="card"><strong>Reseñas</strong><p class="small">Próximamente: aquí aparecerán reseñas aprobadas por el administrador.</p></div>`;
-  document.getElementById('reviewsContainer').appendChild(cont);
+/* helper convertir archivo a base64 */
+function fileToBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }) }
+
+/* mostrar reseñas aprobadas: si montás endpoint JSON, lo buscamos; por ahora demo si no existe */
+async function showApprovedReviews(sku){
+  const container = document.getElementById('reviewsContainer');
+  container.innerHTML += '<div class="small" style="margin-top:8px">Cargando reseñas...</div>';
+  if(!REVIEWS_GET_URL || REVIEWS_GET_URL.includes("REPLACE_WITH")) {
+    // Demo: mostrar mensaje
+    container.innerHTML += `<div style="padding:10px;background:#fff;border-radius:8px;margin-top:8px"><strong>Reseñas</strong><p class="small">Cuando apruebes reseñas, aquí aparecerán las reales.</p></div>`;
+    return;
+  }
+  try{
+    const r = await fetch(REVIEWS_GET_URL + '?sku=' + encodeURIComponent(sku));
+    const list = await r.json();
+    const box = document.createElement('div');
+    box.style.marginTop='12px';
+    if(!list || list.length===0) box.innerHTML = '<div class="card small">No hay reseñas aprobadas aún.</div>';
+    else{
+      box.innerHTML = '<strong>Reseñas aprobadas</strong>';
+      list.forEach(item=>{
+        const el = document.createElement('div');
+        el.style.padding='8px'; el.style.marginTop='8px'; el.style.background='#fff'; el.style.borderRadius='8px';
+        el.innerHTML = `<div>${'★'.repeat(item.estrellas)}${'☆'.repeat(5-item.estrellas)} <span class="small"> - ${item.nombre || 'Anónimo'}</span></div>
+                        <p style="margin:6px 0">${item.comentario}</p>
+                        ${item.imageUrl ? `<img src="${item.imageUrl}" style="max-width:100%;border-radius:8px;margin-top:6px">` : ''}`;
+        box.appendChild(el);
+      });
+    }
+    container.appendChild(box);
+  }catch(e){ console.error(e); container.innerHTML += '<div class="small">Error cargando reseñas.</div>'; }
 }
 
 /* ======================
@@ -361,5 +382,3 @@ function showApprovedReviews(sku){
 </script>
 </body>
 </html>
-
-

@@ -1,39 +1,365 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nicolás Tienda Fem — Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#A94FB0;
+    --accent:#C061C9;
+    --bg:#fbf7fe;
+    --card:#ffffff;
+    --muted:#666;
+  }
+  body{font-family:Inter,system-ui,Arial; background:var(--bg); margin:0; padding:20px; color:#222;}
+  .wrap{max-width:1100px;margin:0 auto;}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  header h1{color:var(--primary);margin:0;font-size:20px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+  .card img{width:100%;height:180px;object-fit:cover;border-radius:8px}
+  .price{font-weight:700;color:#0b0}
+  .btn{background:var(--primary);color:#fff;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+  .btn.secondary{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+  .cartbox{position:fixed;right:18px;bottom:18px;background:var(--card);padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);width:320px;max-width:92%}
+  .cart-items{max-height:220px;overflow:auto;margin-bottom:10px}
+  .flex{display:flex;gap:8px;align-items:center}
+  .stars{color:#FFD700}
+  .product-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-inner{width:100%;max-width:920px;background:#fff;border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .reviews {margin-top:12px}
+  textarea,input{font-family:Inter; padding:8px;border-radius:8px;border:1px solid #ddd;width:100%}
+  .small{font-size:13px;color:var(--muted)}
+  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+  @media(max-width:800px){ .modal-inner{grid-template-columns:1fr} .card img{height:150px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Nicolás Tienda Fem</h1>
+    <div>
+      <button id="openCatalog" class="btn">Catálogo</button>
+    </div>
+  </header>
 
-const questions = [
-  { text: "Competencia", answer: "esencial" },
-  { text: "Objeto", answer: "esencial" },
-  { text: "Modo", answer: "accidental" },
-  { text: "Condición", answer: "accidental" },
-  { text: "Causa", answer: "esencial" },
-  { text: "HTML", answer: "ninguno" },
-  { text: "Plazo", answer: "accidental" },
-  { text: "Finalidad", answer: "esencial" },
-  { text: "Motivación", answer: "esencial" },
-  { text: "FIFA", answer: "ninguno" },
-  { text: "Forma", answer: "esencial" },
-  { text: "Competencias deportivas", answer: "ninguno" }
+  <!-- Catálogo -->
+  <section id="catalog" class="grid"></section>
+
+  <!-- Carrito flotante -->
+  <div id="cart" class="cartbox" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <strong>Tu carrito</strong>
+      <button id="closeCart" class="btn secondary">Cerrar</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div class="small">Total</div>
+        <div id="cartTotal" style="font-weight:800;font-size:18px">$0</div>
+      </div>
+      <div>
+        <button id="checkoutBtn" class="btn">Pagar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal producto -->
+  <div id="productModal" class="product-modal" role="dialog" aria-hidden="true">
+    <div class="modal-inner">
+      <div>
+        <img id="modalImg" src="" alt="producto">
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <img id="s1" src="" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer">
+          <img id="s2" src="" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer">
+          <img id="s3" src="" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer">
+        </div>
+      </div>
+      <div>
+        <h2 id="modalTitle"></h2>
+        <div class="small" id="modalSku"></div>
+        <div style="margin:8px 0"><span class="price" id="modalPrice"></span></div>
+        <p id="modalDesc" class="small"></p>
+
+        <div style="margin-top:10px">
+          <label class="small">Talle</label>
+          <select id="modalSize" style="margin-top:6px;padding:8px;border-radius:8px;border:1px solid #ddd">
+            <option value="Único">Único</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button id="addToCart" class="btn">Agregar al carrito</button>
+          <button id="openReviews" class="btn secondary">Ver opiniones</button>
+        </div>
+
+        <div class="reviews" id="reviewsContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Demo tienda — integrado con Google Forms/Sheets y Mercado Pago (modo prueba)</footer>
+</div>
+
+<script>
+/* ======================
+   CONFIG: cambia estos valores
+   ====================== */
+const INVENTORY_SOURCE = null; // null = usa demo interno. Reemplazar con URL JSON o Google Sheets JSON.
+const GOOGLE_REVIEW_POST_URL = "https://script.google.com/macros/s/AKfycbziX7jD-f7vvkMObh8_u2k5SwJG-zWCVO3lLP6oiptHQ3IINd5lwIREU415mGV44GRt/exec"; // tu script de reviews (ya lo pasaste)
+const MARKETPLACE_ACCESS_TOKEN = "APP_USR-3592417782393490-062312-42713d75e4ccf512cd2beffbb51405c9-267507332"; // token de prueba que pasaste
+const PREFERENCE_CREATE_ENDPOINT = null; // RECOMENDADO: poner aquí la URL de tu servidor que crea la preferencia (Apps Script o Node). Si lo dejas null ver sección más abajo.
+/* ====================== */
+
+/* Demo de inventario (si no pones INVENTORY_SOURCE) */
+const DEMO_PRODUCTS = [
+  { sku:"BLS001", name:"Blusa Talle Especial", price:15000, stock:3, images:["https://i.imgur.com/8Km9tLL.jpg","https://i.imgur.com/OQmZm1Q.jpg","https://i.imgur.com/dM7Thhn.jpg"], desc:"Blusa femenina, talle especial, color coral."},
+  { sku:"CLZ010", name:"Calza Térmica", price:15000, stock:10, images:["https://i.imgur.com/IZb8X1s.jpg","https://i.imgur.com/OK0G8gS.jpg","https://i.imgur.com/3v3x1Q2.jpg"], desc:"Calza térmica elastizada de alta calidad."},
+  { sku:"JNS029", name:"Jeans Capri", price:12000, stock:5, images:["https://i.imgur.com/3bK4X7k.jpg","https://i.imgur.com/Pu3n1bF.jpg","https://i.imgur.com/7kQ7W8R.jpg"], desc:"Capri denim, fresco para verano."}
 ];
 
-let current = 0;
+/* Estado del carrito */
+let PRODUCTS = []; // cargado desde demo o INVENTORY_SOURCE
+let CART = [];
 
-function loadQuestion() {
-  document.getElementById("question").innerText = questions[current].text;
-  document.getElementById("feedback").innerText = "";
+/* Inicialización */
+document.addEventListener('DOMContentLoaded', async () => {
+  if(INVENTORY_SOURCE){
+    try{
+      // si la URL es de Google Sheets publicada como JSON, adaptá parseo aquí
+      const res = await fetch(INVENTORY_SOURCE);
+      PRODUCTS = await res.json();
+    }catch(e){
+      console.error("Error cargando inventario:",e);
+      PRODUCTS = DEMO_PRODUCTS;
+    }
+  } else {
+    PRODUCTS = DEMO_PRODUCTS;
+  }
+  renderCatalog();
+});
+
+/* Render catálogo */
+function renderCatalog(){
+  const c = document.getElementById('catalog');
+  c.innerHTML = '';
+  PRODUCTS.forEach(p=>{
+    const el = document.createElement('div');
+    el.className='card';
+    el.innerHTML = `
+      <img src="${p.images[0]}" alt="${p.name}">
+      <h3 style="margin:10px 0 6px">${p.name}</h3>
+      <div class="small">SKU: ${p.sku}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <div><div class="price">$${numberFormat(p.price)}</div><div class="small">${p.stock} disponibles</div></div>
+        <div><button class="btn" onclick='openProduct("${p.sku}")'>Ver</button></div>
+      </div>
+    `;
+    c.appendChild(el);
+  });
 }
 
-function checkAnswer(choice) {
-  const correct = questions[current].answer;
-  const feedback = document.getElementById("feedback");
+/* Formato moneda */
+function numberFormat(n){ return n.toLocaleString('es-AR'); }
 
-  if (choice === correct) {
-    feedback.innerText = "✅ ¡Correcto!";
-  } else {
-    feedback.innerText = `❌ Incorrecto. La respuesta era: ${correct.toUpperCase()}`;
+/* Abrir modal producto */
+function openProduct(sku){
+  const p = PRODUCTS.find(x=>x.sku===sku);
+  if(!p) return;
+  document.getElementById('modalImg').src = p.images[0];
+  document.getElementById('s1').src = p.images[0];
+  document.getElementById('s2').src = p.images[1] || p.images[0];
+  document.getElementById('s3').src = p.images[2] || p.images[0];
+
+  document.getElementById('modalTitle').textContent = p.name;
+  document.getElementById('modalSku').textContent = "SKU: "+p.sku;
+  document.getElementById('modalPrice').textContent = "$" + numberFormat(p.price);
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('addToCart').onclick = ()=> addToCart(p.sku, document.getElementById('modalSize').value);
+  document.getElementById('openReviews').onclick = ()=> loadReviews(p.sku);
+
+  document.getElementById('productModal').style.display = "flex";
+}
+
+/* thumbs */
+['s1','s2','s3'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.onclick = ()=> { document.getElementById('modalImg').src = el.src; }
+});
+
+/* cerrar modal si clic fuera */
+document.getElementById('productModal').addEventListener('click', (ev)=>{
+  if(ev.target.id === 'productModal') document.getElementById('productModal').style.display='none';
+});
+
+/* carrito */
+function addToCart(sku, size){
+  const p = PRODUCTS.find(x=>x.sku===sku);
+  if(!p || p.stock <= 0){ alert("Sin stock"); return; }
+  const item = CART.find(x=>x.sku===sku && x.size===size);
+  if(item){ item.qty++; } else { CART.push({sku, name:p.name, price:p.price, qty:1, size}); }
+  updateCartUI();
+  alert("Agregado al carrito ✅");
+  document.getElementById('productModal').style.display='none';
+}
+
+function updateCartUI(){
+  if(CART.length === 0){ document.getElementById('cart').style.display='none'; return; }
+  document.getElementById('cart').style.display='block';
+  const list = document.getElementById('cartItems');
+  list.innerHTML = '';
+  let total = 0;
+  CART.forEach((it,idx)=>{
+    total += it.price * it.qty;
+    const box = document.createElement('div');
+    box.style.padding='8px';
+    box.style.borderBottom='1px solid #f0f0f0';
+    box.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700">${it.name} <span class="small">(${it.size})</span></div>
+          <div class="small">$${numberFormat(it.price)} x ${it.qty}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <div style="display:flex;gap:6px">
+            <button class="btn secondary" onclick="dec(${idx})">-</button>
+            <button class="btn secondary" onclick="inc(${idx})">+</button>
+          </div>
+          <button class="small" style="background:none;border:none;color:#c00;cursor:pointer" onclick="remove(${idx})">Eliminar</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(box);
+  });
+  document.getElementById('cartTotal').textContent = "$" + numberFormat(total);
+}
+
+/* botones cart */
+function inc(i){ CART[i].qty++; updateCartUI(); }
+function dec(i){ if(CART[i].qty>1) CART[i].qty--; updateCartUI(); }
+function remove(i){ CART.splice(i,1); updateCartUI(); }
+
+/* abrir/close cart */
+document.getElementById('openCatalog').onclick = ()=> window.scrollTo({top:0,behavior:'smooth'});
+document.getElementById('closeCart').onclick = ()=> document.getElementById('cart').style.display='none';
+
+/* Checkout */
+document.getElementById('checkoutBtn').onclick = async ()=>{
+  if(CART.length===0){ alert("Tu carrito está vacío"); return; }
+
+  // Preparamos items
+  const items = CART.map(i=>({
+    title:i.name + (i.size ? " - Talle " + i.size : ""),
+    quantity:i.qty,
+    unit_price: i.price
+  }));
+
+  // Si definiste PREFERENCE_CREATE_ENDPOINT (recomendado), la llamamos:
+  if(PREFERENCE_CREATE_ENDPOINT){
+    try{
+      const resp = await fetch(PREFERENCE_CREATE_ENDPOINT, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({items, external_reference: "pedido_web_demo"})
+      });
+      const data = await resp.json();
+      if(data && data.init_point){
+        window.open(data.init_point,'_blank');
+      } else alert("Error creando preferencia");
+    }catch(e){ console.error(e); alert("Error creando preferencia (endpoint)"); }
+    return;
   }
 
-  current = (current + 1) % questions.length;
-  setTimeout(loadQuestion, 1500);
+  // Si NO tenés endpoint, intentamos crear preferencia directo (puede fallar por CORS)
+  try{
+    const prefResp = await fetch("https://api.mercadopago.com/checkout/preferences", {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+MARKETPLACE_ACCESS_TOKEN
+      },
+      body: JSON.stringify({items, external_reference:"pedido_web_demo"})
+    });
+    const pref = await prefResp.json();
+    if(pref && pref.init_point){
+      window.open(pref.init_point,'_blank');
+    } else {
+      alert("No se pudo crear la preferencia: " + (pref && pref.message ? pref.message : 'error'));
+    }
+  }catch(err){
+    console.error(err);
+    alert("No se pudo conectar con Mercado Pago desde el cliente. Recomendado: usar endpoint de servidor (Apps Script / Node).");
+  }
+};
+
+/* ======================
+   RESEÑAS: enviar a Google Script y mostrar
+   ====================== */
+function loadReviews(sku){
+  // Carga local (si querés podés leer desde Sheets y filtrar por producto)
+  document.getElementById('reviewsContainer').innerHTML = `
+    <div style="padding:10px;background:#fff;border-radius:8px">
+      <h4 style="margin:0 0 6px">Dejá tu opinión</h4>
+      <div style="margin-bottom:6px">
+        <label class="small">Estrellas</label><br>
+        <select id="rvStars">
+          <option value="5">★★★★★ 5</option>
+          <option value="4">★★★★ 4</option>
+          <option value="3">★★★ 3</option>
+          <option value="2">★★ 2</option>
+          <option value="1">★ 1</option>
+        </select>
+      </div>
+      <div>
+        <textarea id="rvComment" placeholder="Tu comentario..." style="height:80px"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn" onclick="postReview('${sku}')">Enviar</button>
+        <button class="btn secondary" onclick="showApprovedReviews('${sku}')">Ver reseñas</button>
+      </div>
+      <p class="small" style="margin-top:8px">Tus reseñas ayudan a otras clientas ✨</p>
+    </div>
+  `;
 }
 
-window.onload = loadQuestion;
+/* enviar review al Google Script (tu endpoint) */
+async function postReview(sku){
+  const stars = document.getElementById('rvStars').value;
+  const comment = document.getElementById('rvComment').value.trim();
+  if(!comment){ alert("Escribí un comentario"); return; }
+  const payload = { nombre:"Cliente web", estrellas: stars, comentario: comment, producto: sku };
+
+  try{
+    const res = await fetch(GOOGLE_REVIEW_POST_URL, {
+      method:'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if(res.ok){ alert("Gracias por tu reseña!"); document.getElementById('productModal').style.display='none'; }
+    else alert("Error al enviar reseña");
+  }catch(e){ console.error(e); alert("Error al conectar reseñas"); }
+}
+
+/* mostrar reseñas aprobadas (demo: lee de localStorage o de Sheets si montás) */
+function showApprovedReviews(sku){
+  // IMPLEMENTACIÓN: Podés publicar en Google Sheets las reseñas aprobadas y exponerlas vía JSON (Apps Script),
+  // luego hacer fetch() aquí para traerlas y renderizarlas. Por ahora mostramos mensajes demo.
+  const cont = document.createElement('div');
+  cont.style.marginTop='12px';
+  cont.innerHTML = `<div class="card"><strong>Reseñas</strong><p class="small">Próximamente: aquí aparecerán reseñas aprobadas por el administrador.</p></div>`;
+  document.getElementById('reviewsContainer').appendChild(cont);
+}
+
+/* ======================
+   FIN
+   ====================== */
+</script>
+</body>
+</html>
+
 
